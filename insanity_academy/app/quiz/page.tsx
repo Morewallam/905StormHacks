@@ -3,12 +3,17 @@
 import { useState } from "react";
 import Link from "next/link";
 
-export default function Quiz() {
-  // クイズの問題と正解
-  const question = "What is 1 + 1 ?";
-  const correctAnswer = "2";
+// クイズの問題リスト
+const quizQuestions = [
+  { question: "What is the capital of France?", answer: "Paris" },
+  { question: "What is 2 + 2?", answer: "4" },
+  { question: "Who wrote 'Hamlet'?", answer: "William Shakespeare" },
+  { question: "What is the speed of light?", answer: "299,792,458 m/s" },
+];
 
+export default function Quiz() {
   // 状態管理
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswer, setUserAnswer] = useState(""); // 入力値
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null); // 正誤判定
   const [correctCount, setCorrectCount] = useState(0); // 正解数
@@ -32,23 +37,50 @@ export default function Quiz() {
   if (accuracy < 0.4) {
     bgColor = "bg-red-800";
     textColor = "text-yellow-500";
-    textStyle = "text-5xl font-black tracking-widest";
+    textStyle = "text-5xl tracking-wider font-black";
     shakeEffect = "animate-shake-hard";
   }
-  if (accuracy < 0.2) {
-    bgColor = "bg-red-700 text-white";
-    textStyle = "text-6xl font-black tracking-wider italic";
+  if (accuracy < 0.3) {
+    bgColor = "bg-red-700";
+    textStyle = "text-6xl tracking-wide font-black italic";
     shakeEffect = "animate-shake-crazy";
   }
+  if (accuracy < 0.2) {
+    bgColor = "bg-red-600 animate-pulse";
+    textStyle = "text-7xl tracking-widest font-extrabold";
+    shakeEffect = "animate-shake-madness";
+  }
+  if (accuracy < 0.1) {
+    bgColor = "bg-red-500 animate-flash";
+    textStyle = "text-8xl tracking-tight font-black";
+    shakeEffect = "animate-screen-shake";
+  }
+
+  // 現在の問題と答え
+  const currentQuestion = quizQuestions[currentIndex];
 
   // 回答をチェック
   const handleCheckAnswer = () => {
     setTotalAttempts(totalAttempts + 1);
-    if (userAnswer.trim() === correctAnswer) {
+    if (userAnswer.trim().toLowerCase() === currentQuestion.answer.toLowerCase()) {
       setCorrectCount(correctCount + 1);
       setIsCorrect(true);
     } else {
       setIsCorrect(false);
+    }
+  };
+
+  // 次の問題へ
+  const nextQuestion = () => {
+    setIsCorrect(null);
+    setUserAnswer("");
+    if (currentIndex < quizQuestions.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      // 全問終了 → 最初に戻る
+      setCurrentIndex(0);
+      setCorrectCount(0);
+      setTotalAttempts(0);
     }
   };
 
@@ -57,7 +89,7 @@ export default function Quiz() {
       <h1 className={`sm:text-4xl ${textStyle} ${textColor} transition-all duration-500`}>
         🧠 Quiz
       </h1>
-      <p className={`mt-4 text-lg ${textColor}`}>{question}</p>
+      <p className={`mt-4 text-lg ${textColor}`}>{currentQuestion.question}</p>
 
       {/* ユーザーが答えを入力するエリア */}
       <input
@@ -78,13 +110,19 @@ export default function Quiz() {
 
       {/* 回答結果の表示 */}
       {isCorrect !== null && (
-        <p
-          className={`mt-4 text-lg font-bold ${
-            isCorrect ? "text-green-400" : "text-red-400"
-          }`}
-        >
+        <p className={`mt-4 text-lg font-bold ${isCorrect ? "text-green-400" : "text-red-400"}`}>
           {isCorrect ? "✅ Correct!" : "❌ Wrong..."}
         </p>
+      )}
+
+      {/* 次の問題に進むボタン */}
+      {isCorrect !== null && (
+        <button
+          onClick={nextQuestion}
+          className="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition"
+        >
+          Next Question →
+        </button>
       )}
 
       {/* ホームに戻るボタン */}
