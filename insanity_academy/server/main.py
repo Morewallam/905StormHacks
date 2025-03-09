@@ -4,6 +4,7 @@ from typing import Annotated, Optional, Union
 from fastapi import Depends, FastAPI, HTTPException
 from pydantic import BaseModel
 from sqlmodel import Field, Session, SQLModel, create_engine, select
+from fastapi.middleware.cors import CORSMiddleware
 
 
 class CardBase(SQLModel):
@@ -66,6 +67,23 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(lifespan=lifespan)
+
+origins = [
+    "http://localhost:3000",  # Allow requests from your Next.js app
+    "http://127.0.0.1:3000",  # Allow requests from local development environment
+    # You can add more allowed origins here
+    "http://localhost:3001",  # Allow requests from your Next.js app
+    "http://127.0.0.1:3001",
+]
+
+# Add CORS middleware to the app
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Specify allowed origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 
 
 @app.post("/cards", response_model=CardPublic)
