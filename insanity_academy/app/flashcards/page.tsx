@@ -1,57 +1,57 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 // Flashcards data with Mnemonics
-// const flashcards = [
-//   {
-//     question: "What is the capital of France?",
-//     answer: "Paris",
-//     mnemonic: "Imagine a pair of **‘Paris’** high heels stomping on a baguette. 🇫🇷👠🥖",
-//   },
-//   {
-//     question: "What is 2 + 2?",
-//     answer: "4",
-//     mnemonic: "Think of two ducks 🦆🦆 meeting two more ducks 🦆🦆... Now you have a **quacking** good 4!",
-//   },
-//   {
-//     question: "Who wrote 'Hamlet'?",
-//     answer: "William Shakespeare",
-//     mnemonic: "**Shake a spear** in the air violently while yelling: 'To be or not to be!' 🎭⚔️",
-//   },
-//   {
-//     question: "What is the speed of light?",
-//     answer: "299,792,458 m/s",
-//     mnemonic: "Imagine a **light-speed** car 🚗💨 breaking the sound barrier while shouting: '299 MILLION METERS PER SECOND!'",
-//   },
-// ];
+const flashcards = [
+  {
+    question: "What is the capital of France?",
+    answer: "Paris",
+    mnemonic: "Imagine a pair of **‘Paris’** high heels stomping on a baguette. 🇫🇷👠🥖",
+  },
+  {
+    question: "What is 2 + 2?",
+    answer: "4",
+    mnemonic: "Think of two ducks 🦆🦆 meeting two more ducks 🦆🦆... Now you have a **quacking** good 4!",
+  },
+  {
+    question: "Who wrote 'Hamlet'?",
+    answer: "William Shakespeare",
+    mnemonic: "**Shake a spear** in the air violently while yelling: 'To be or not to be!' 🎭⚔️",
+  },
+  {
+    question: "What is the speed of light?",
+    answer: "299,792,458 m/s",
+    mnemonic: "Imagine a **light-speed** car 🚗💨 breaking the sound barrier while shouting: '299 MILLION METERS PER SECOND!'",
+  },
+];
 
 export default function Flashcards() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
-  const [flashcards, setData] = useState([{front: "", back:""}]);
-  const [loading, setLoading] = useState(true);
+  // const [flashcards, setData] = useState([{front: "", back:""}]);
+  // const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-        const response = await fetch('http://127.0.0.1:8000/cards',{
-          headers:{
-            "Access-Control-Allow-Origin": "*"
-          }}
-        ); // URL for your GET request
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-        const result = await response.json();
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //       const response = await fetch('http://127.0.0.1:8000/cards',{
+  //         headers:{
+  //           "Access-Control-Allow-Origin": "*"
+  //         }}
+  //       ); // URL for your GET request
+  //       if (!response.ok) {
+  //         throw new Error('Failed to fetch data');
+  //       }
+  //       const result = await response.json();
 
-        setData(result);
-        setLoading(false);
-    };
+  //       setData(result);
+  //       setLoading(false);
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
   const [showMnemonic, setShowMnemonic] = useState(false);
 
   const nextCard = () => {
@@ -88,7 +88,7 @@ export default function Flashcards() {
         {/* Flashcard Display */}
         <div className="relative mt-6 w-[450px] h-80 bg-gray-800 text-white p-8 rounded-xl border-4 border-red-500 shadow-xl flex flex-col items-center justify-center">
           <p className="text-3xl font-bold text-center">
-            {!loading && showAnswer ? flashcards[currentIndex].front : flashcards[currentIndex].back}
+            {/* !loading &&*/ showAnswer ? flashcards[currentIndex].answer : flashcards[currentIndex].question}
           </p>
 
           <button
@@ -107,11 +107,11 @@ export default function Flashcards() {
         </div>
 
         {/* Mnemonic Display */}
-        {/* {showMnemonic && (
+        {showMnemonic && (
           <div className="mt-4 w-[450px] bg-yellow-600 text-black p-4 rounded-lg text-center font-semibold border-2 border-yellow-400 shadow-lg">
             {flashcards[currentIndex].mnemonic}
           </div>
-        )} */}
+        )}
 
         {/* Navigation Buttons */}
         <div className="mt-4 flex flex-row gap-4">
