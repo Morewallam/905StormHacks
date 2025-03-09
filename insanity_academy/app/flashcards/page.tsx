@@ -4,11 +4,28 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+// Flashcards data with Mnemonics
 // const flashcards = [
-//   { question: "What is the capital of France?", answer: "Paris" },
-//   { question: "What is 2 + 2?", answer: "4" },
-//   { question: "Who wrote 'Hamlet'?", answer: "William Shakespeare" },
-//   { question: "What is the speed of light?", answer: "299,792,458 m/s" },
+//   {
+//     question: "What is the capital of France?",
+//     answer: "Paris",
+//     mnemonic: "Imagine a pair of **‘Paris’** high heels stomping on a baguette. 🇫🇷👠🥖",
+//   },
+//   {
+//     question: "What is 2 + 2?",
+//     answer: "4",
+//     mnemonic: "Think of two ducks 🦆🦆 meeting two more ducks 🦆🦆... Now you have a **quacking** good 4!",
+//   },
+//   {
+//     question: "Who wrote 'Hamlet'?",
+//     answer: "William Shakespeare",
+//     mnemonic: "**Shake a spear** in the air violently while yelling: 'To be or not to be!' 🎭⚔️",
+//   },
+//   {
+//     question: "What is the speed of light?",
+//     answer: "299,792,458 m/s",
+//     mnemonic: "Imagine a **light-speed** car 🚗💨 breaking the sound barrier while shouting: '299 MILLION METERS PER SECOND!'",
+//   },
 // ];
 
 export default function Flashcards() {
@@ -35,50 +52,68 @@ export default function Flashcards() {
 
     fetchData();
   }, []);
+  const [showMnemonic, setShowMnemonic] = useState(false);
 
   const nextCard = () => {
     setShowAnswer(false);
+    setShowMnemonic(false);
     setCurrentIndex((prevIndex) => (prevIndex + 1) % flashcards.length);
   };
 
   const goBack = () => {
     setShowAnswer(false);
+    setShowMnemonic(false);
     setCurrentIndex((prevIndex) => (prevIndex - 1 + flashcards.length) % flashcards.length);
   };
   
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-black text-white font-sans">
-      {/* 背景ロゴ画像（透明度調整付き） */}
+      {/* Background Logo Image */}
       <div className="absolute inset-0 w-full h-full">
         <Image
           src="/logo.png"
           alt="Background Logo"
           fill
-          className="object-contain opacity-30" // 🔥 透明度調整 (0.0 - 1.0)
+          className="object-contain opacity-30"
           priority
         />
       </div>
 
-      {/* メインコンテンツ（ボタンを前面に配置） */}
+      {/* Main Content */}
       <main className="relative flex flex-col items-center justify-center flex-grow p-8 pb-20 gap-16 sm:p-20">
         <h1 className="text-3xl sm:text-4xl font-bold text-white">
           Welcome to INSANITY ACADEMY
         </h1>
 
-        {/* フラッシュカード */}
-        <div className="relative mt-6 w-[450px] h-72 bg-gray-800 text-white p-8 rounded-xl border-4 border-red-500 shadow-xl flex flex-col items-center justify-center">
+        {/* Flashcard Display */}
+        <div className="relative mt-6 w-[450px] h-80 bg-gray-800 text-white p-8 rounded-xl border-4 border-red-500 shadow-xl flex flex-col items-center justify-center">
           <p className="text-3xl font-bold text-center">
             {!loading && showAnswer ? flashcards[currentIndex].front : flashcards[currentIndex].back}
           </p>
+
           <button
             onClick={() => setShowAnswer(!showAnswer)}
-            className="absolute bottom-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition"
+            className="absolute bottom-4 left-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition"
           >
             {showAnswer ? "Hide Answer" : "Show Answer"}
           </button>
+
+          <button
+            onClick={() => setShowMnemonic(!showMnemonic)}
+            className="absolute bottom-4 right-6 bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg text-lg transition"
+          >
+            {showMnemonic ? "Hide Mnemonic" : "Show Mnemonic"}
+          </button>
         </div>
 
-        {/* 「Go Back」＆「Next Card」ボタン */}
+        {/* Mnemonic Display */}
+        {/* {showMnemonic && (
+          <div className="mt-4 w-[450px] bg-yellow-600 text-black p-4 rounded-lg text-center font-semibold border-2 border-yellow-400 shadow-lg">
+            {flashcards[currentIndex].mnemonic}
+          </div>
+        )} */}
+
+        {/* Navigation Buttons */}
         <div className="mt-4 flex flex-row gap-4">
           {currentIndex > 0 && (
             <button
@@ -96,7 +131,7 @@ export default function Flashcards() {
           </button>
         </div>
 
-        {/* ホームに戻るボタン */}
+        {/* Home Button */}
         <Link href="/">
           <button className="mt-6 bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-lg text-lg transition">
             🔙 Go Home
