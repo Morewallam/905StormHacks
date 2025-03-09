@@ -6,9 +6,9 @@ CREATE TABLE users(
     madness INTEGER
 );
 
-DROP TABLE flash_cards;
+DROP TABLE card;
 
-CREATE TABLE flash_cards(
+CREATE TABLE card(
     card_id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL,
     front   TEXT    NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE attempts(
 
 insert into users(name) values ('Sean');
 
-insert into flash_cards (user_id, front, back, times_correct, times_tried) values (1,'The Front', 'The Back',0,0);
+insert into card (user_id, front, back, times_correct, times_tried) values (1,'The Front', 'The Back',0,0);
 
 insert into attempts values (1,1);
 
