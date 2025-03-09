@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const flashcards = [
   { question: "What is the capital of France?", answer: "Paris" },
@@ -25,48 +26,62 @@ export default function Flashcards() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-8">
-      <h1 className="text-3xl sm:text-4xl font-bold">📖 Flashcards</h1>
-      <p className="mt-4 text-lg">Check Flashcards here</p>
-
-      {/* フラッシュカード表示（赤枠追加） */}
-      <div className="relative mt-6 w-[450px] h-72 bg-gray-800 text-white p-8 rounded-xl border-4 border-red-500 shadow-xl flex flex-col items-center justify-center">
-        <p className="text-3xl font-bold text-center">
-          {showAnswer ? flashcards[currentIndex].answer : flashcards[currentIndex].question}
-        </p>
-        <button
-          onClick={() => setShowAnswer(!showAnswer)}
-          className="absolute bottom-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition"
-        >
-          {showAnswer ? "Hide Answer" : "Show Answer"}
-        </button>
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-black text-white font-sans">
+      {/* 背景ロゴ画像（透明度調整付き） */}
+      <div className="absolute inset-0 w-full h-full">
+        <Image
+          src="/logo.png"
+          alt="Background Logo"
+          fill
+          className="object-contain opacity-30" // 🔥 透明度調整 (0.0 - 1.0)
+          priority
+        />
       </div>
 
-      {/* 「Go Back」＆「Next Card」ボタン */}
-      <div className="mt-4 flex flex-row gap-4">
-        {currentIndex > 0 && (
+      {/* メインコンテンツ（ボタンを前面に配置） */}
+      <main className="relative flex flex-col items-center justify-center flex-grow p-8 pb-20 gap-16 sm:p-20">
+        <h1 className="text-3xl sm:text-4xl font-bold text-white">
+          Welcome to INSANITY ACADEMY
+        </h1>
+
+        {/* フラッシュカード */}
+        <div className="relative mt-6 w-[450px] h-72 bg-gray-800 text-white p-8 rounded-xl border-4 border-red-500 shadow-xl flex flex-col items-center justify-center">
+          <p className="text-3xl font-bold text-center">
+            {showAnswer ? flashcards[currentIndex].answer : flashcards[currentIndex].question}
+          </p>
           <button
-            onClick={goBack}
-            className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition"
+            onClick={() => setShowAnswer(!showAnswer)}
+            className="absolute bottom-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition"
           >
-            ← Go Back
+            {showAnswer ? "Hide Answer" : "Show Answer"}
           </button>
-        )}
+        </div>
 
-        <button
-          onClick={nextCard}
-          className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition"
-        >
-          Next Card →
-        </button>
-      </div>
+        {/* 「Go Back」＆「Next Card」ボタン */}
+        <div className="mt-4 flex flex-row gap-4">
+          {currentIndex > 0 && (
+            <button
+              onClick={goBack}
+              className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition"
+            >
+              ← Go Back
+            </button>
+          )}
+          <button
+            onClick={nextCard}
+            className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition"
+          >
+            Next Card →
+          </button>
+        </div>
 
-      {/* トップページに戻るボタン */}
-      <Link href="/">
-        <button className="mt-6 bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-lg text-lg transition">
-          🔙 Go Home
-        </button>
-      </Link>
+        {/* ホームに戻るボタン */}
+        <Link href="/">
+          <button className="mt-6 bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-lg text-lg transition">
+            🔙 Go Home
+          </button>
+        </Link>
+      </main>
     </div>
   );
 }
