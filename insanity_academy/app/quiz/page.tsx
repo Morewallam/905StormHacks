@@ -19,6 +19,12 @@ export default function Quiz() {
   const [correctCount, setCorrectCount] = useState(0); // 正解数
   const [totalAttempts, setTotalAttempts] = useState(0); // 解答回数
 
+  // 🎶 사운드 재생 함수 (public/sounds/ 폴더에서 오디오 파일 불러오기)
+  const playSound = (fileName: string) => {
+    const audio = new Audio(`/sounds/${fileName}`);
+    audio.play();
+  };
+
   // 正答率計算
   const accuracy = totalAttempts > 0 ? correctCount / totalAttempts : 1;
 
@@ -80,8 +86,12 @@ export default function Quiz() {
     if (userAnswer.trim().toLowerCase() === currentQuestion.answer.toLowerCase()) {
       setCorrectCount(correctCount + 1);
       setIsCorrect(true);
+      playSound("correct.wav"); // ✅ 정답 사운드
+      playSound("genius.wav"); // 🎤 "You are a Genius!"
     } else {
       setIsCorrect(false);
+      playSound("wrong.mp3"); // ❌ 오답 사운드
+      playSound("madness_laugh.wav"); // 😈 미친 웃음소리
     }
   };
 
