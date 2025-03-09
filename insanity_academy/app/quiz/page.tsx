@@ -19,6 +19,12 @@ export default function Quiz() {
   const [correctCount, setCorrectCount] = useState(0); // 正解数
   const [totalAttempts, setTotalAttempts] = useState(0); // 解答回数
 
+  // 🎶 사운드 재생 함수 (public/sounds/ 폴더에서 오디오 파일 불러오기)
+  const playSound = (fileName: string) => {
+    const audio = new Audio(`/sounds/${fileName}`);
+    audio.play();
+  };
+
   // 正答率計算
   const accuracy = totalAttempts > 0 ? correctCount / totalAttempts : 1;
 
@@ -34,27 +40,42 @@ export default function Quiz() {
     textStyle = "text-4xl font-extrabold tracking-widest";
     shakeEffect = "animate-shake";
   }
-  if (accuracy < 0.4) {
+  
+  if (accuracy < 0.5) {
     bgColor = "bg-red-800";
     textColor = "text-yellow-500";
     textStyle = "text-5xl tracking-wider font-black";
     shakeEffect = "animate-shake-hard";
   }
-  if (accuracy < 0.3) {
+  
+  if (accuracy < 0.4) {
     bgColor = "bg-red-700";
+    textColor = "text-yellow-500 animate-text-glitch";
     textStyle = "text-6xl tracking-wide font-black italic";
     shakeEffect = "animate-shake-crazy";
   }
-  if (accuracy < 0.2) {
+  
+  if (accuracy < 0.3) {
     bgColor = "bg-red-600 animate-pulse";
-    textStyle = "text-7xl tracking-widest font-extrabold";
+    textColor = "text-white animate-text-glitch";
+    textStyle = "text-7xl tracking-widest font-extrabold italic";
     shakeEffect = "animate-shake-madness";
   }
-  if (accuracy < 0.1) {
-    bgColor = "bg-red-500 animate-flash";
+  
+  if (accuracy < 0.2) {
+    bgColor = "bg-red-500 animate-pulse";
+    textColor = "text-white animate-text-glitch";
     textStyle = "text-8xl tracking-tight font-black";
     shakeEffect = "animate-screen-shake";
   }
+  
+  if (accuracy < 0.1) {
+    bgColor = "bg-red-500 animate-flash";
+    textColor = "text-white animate-text-glitch";
+    textStyle = "text-[5rem] tracking-tight font-black italic";
+    shakeEffect = "animate-screen-shake-hard";
+  }
+
 
   // 現在の問題と答え
   const currentQuestion = quizQuestions[currentIndex];
@@ -65,8 +86,12 @@ export default function Quiz() {
     if (userAnswer.trim().toLowerCase() === currentQuestion.answer.toLowerCase()) {
       setCorrectCount(correctCount + 1);
       setIsCorrect(true);
+      playSound("correct.wav"); // ✅ 정답 사운드
+      playSound("genius.wav"); // 🎤 "You are a Genius!"
     } else {
       setIsCorrect(false);
+      playSound("wrong.mp3"); // ❌ 오답 사운드
+      playSound("madness_laugh.wav"); // 😈 미친 웃음소리
     }
   };
 
