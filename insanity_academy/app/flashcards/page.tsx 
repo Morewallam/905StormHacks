@@ -1,8 +1,0 @@
-export default function Flashcards() {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-8">
-      <h1 className="text-3xl font-bold">📖 フラッシュカード</h1>
-      <p className="mt-4 text-lg">ここにフラッシュカードのコンテンツを追加します。</p>
-    </div>
-  );
-}

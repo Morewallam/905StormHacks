@@ -10,7 +10,7 @@ export default function Home() {
           src="/logo.png"
           alt="Background Logo"
           fill
-          className="object-contain opacity-20" // 透明度を調整
+          className="object-contain opacity-30" // 透明度を調整
           priority
         />
       </div>
@@ -24,13 +24,13 @@ export default function Home() {
         {/* ボタンコンテナ */}
         <div className="flex flex-col gap-6 w-full max-w-2xl">
           <Link href="/flashcards">
-            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition">
+            <button className="w-full bg-blue-800 hover:bg-blue-900 text-white font-bold py-5 px-10 rounded-lg text-2xl transition">
               📖 Flashcards
             </button>
           </Link>
 
           <Link href="/quiz">
-            <button className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition">
+            <button className="w-full bg-red-800 hover:bg-red-900 text-white font-bold py-5 px-10 rounded-lg text-2xl transition">
               🧠 Quiz
             </button>
           </Link>
